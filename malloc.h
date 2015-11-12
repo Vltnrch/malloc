@@ -6,15 +6,13 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:29:16 by vroche            #+#    #+#             */
-/*   Updated: 2015/10/26 16:37:33 by vroche           ###   ########.fr       */
+/*   Updated: 2015/10/29 18:21:51 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
 
-# include "libft.h"
-# include "ft_printf.h"
 # include <unistd.h>
 # include <sys/resource.h>
 # include <sys/mman.h>
@@ -28,10 +26,10 @@
 # define TINYPAGE 1
 # define SMALLPAGE 2
 # define LARGEPAGE 3
-/*     int
-     getrlimit(RLIMIT_AS, struct rlimit *rlp);*/
+/*  int
+    getrlimit(RLIMIT_AS, struct rlimit *rlp);*/
 
- /*   int
+/*  int
     getpagesize(void);*/
 
 typedef struct		s_block
@@ -39,6 +37,7 @@ typedef struct		s_block
 	size_t			size;
 	char			isfree;
 	void			*ptr;
+	struct s_block	*prev;
 	struct s_block	*next;
 }					t_block;
 
@@ -48,6 +47,7 @@ typedef struct		s_page
 	size_t			size;
 	void			*end;
 	struct s_block	*block;
+	struct s_page	*prev;
 	struct s_page	*next;
 }					t_page;
 
@@ -59,8 +59,10 @@ typedef struct		s_env
 	rlim_t			totalsize;
 }					t_env;
 
-t_env				*get_env(void);
+t_env				*get_env_malloc(void);
+int					find_block(t_env *env, t_page **ptrp, t_block **ptrb, void *ptr);
 
-t_block				*get_block_free(t_env *env, size_t size, char type, t_page **page);
+void				ft_free(void *ptr);
+void				*ft_malloc(size_t size);
 
 #endif

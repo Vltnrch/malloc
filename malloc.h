@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:29:16 by vroche            #+#    #+#             */
-/*   Updated: 2015/10/29 18:21:51 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/17 18:16:42 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@
 # define TINYPAGE 1
 # define SMALLPAGE 2
 # define LARGEPAGE 3
-/*  int
-    getrlimit(RLIMIT_AS, struct rlimit *rlp);*/
-
-/*  int
-    getpagesize(void);*/
 
 typedef struct		s_block
 {
@@ -64,5 +59,7 @@ int					find_block(t_env *env, t_page **ptrp, t_block **ptrb, void *ptr);
 
 void				ft_free(void *ptr);
 void				*ft_malloc(size_t size);
+
+void 				show_alloc_mem(void);
 
 #endif

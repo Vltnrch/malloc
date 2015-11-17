@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/10/29 17:01:00 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/17 18:08:51 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static t_block	*add_page(t_env *env, size_t size, char type, t_page **ptrp)
 	page->block->ptr = ptr + sizeof(t_page) + sizeof(t_block);
 	page->block->prev = NULL;
 	page->block->next = NULL;
+	env->totalsize += size;
 	*ptrp = page;
 	return (page->block);
 }

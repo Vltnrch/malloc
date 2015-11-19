@@ -6,7 +6,7 @@
 #    By: vroche <vroche@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 17:32:05 by vroche            #+#    #+#              #
-#    Updated: 2015/11/17 22:57:10 by vroche           ###   ########.fr        #
+#    Updated: 2015/11/19 17:18:51 by vroche           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ NAME = libft_malloc_$(HOSTTYPE).so
 
 CFLAGS = -Wall -Werror -Wextra
 
-C = management.c \
+C = free.c \
 	malloc.c \
-	free.c 
+	management.c \
+	realloc.c \
+	show_alloc_mem.c
 
 O = $(C:.c=.o)
 

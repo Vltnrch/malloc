@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:29:16 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/18 17:28:00 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/19 12:56:50 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int					find_block(t_env *env, t_page **ptrp, t_block **ptrb, void *ptr);
 
 void				ft_free(void *ptr);
 void				*ft_malloc(size_t size);
+void				*ft_realloc(void *ptr, size_t size);
 
 void 				show_alloc_mem(void);
 

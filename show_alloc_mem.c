@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/29 15:19:50 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/18 17:28:36 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/19 12:14:02 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	size_base(size_t n, int base)
 	return (size);
 }
 
-static void ft_printaddr(void *n)
+static void	ft_printaddr(void *n)
 {
 	char		ptr[19];
 	size_t		d;
@@ -50,7 +50,7 @@ static void ft_printaddr(void *n)
 	write(1, ptr, size + 2);
 }
 
-static void ft_printsizet(size_t n)
+static void	ft_printsizet(size_t n)
 {
 	char		ptr[32];
 	int			size;
@@ -75,7 +75,7 @@ static void ft_printsizet(size_t n)
 	write(1, ptr, size);
 }
 
-static void	print_page_block(t_page *page, t_block *block, size_t total)
+static void	print_page_block(t_page *page, t_block *block, size_t *total)
 {
 	if (page != NULL)
 	{
@@ -94,11 +94,12 @@ static void	print_page_block(t_page *page, t_block *block, size_t total)
 		ft_printaddr(block->ptr);
 		write(1, " - ", 3);
 		ft_printaddr(block->ptr + block->size);
+		*total += block->size;
 	}
 	else
 		write(1, "Total", 5);
 	write(1, " : ", 3);
-	ft_printsizet(block == NULL ? total : block->size);
+	ft_printsizet(block == NULL ? *total : block->size);
 	write(1, " octets\n", 8);
 }
 
@@ -116,19 +117,16 @@ void		show_alloc_mem(void)
 	pthread_mutex_lock(get_mutex_malloc());
 	while (page)
 	{
-		print_page_block(page, NULL, 0);
+		print_page_block(page, NULL, &total);
 		block = page->block;
 		while (block)
 		{
 			if (!block->isfree)
-			{
-				print_page_block(NULL, block, 0);
-				total += block->size;
-			}
+				print_page_block(NULL, block, &total);
 			block = block->next;
 		}
 		page = page->next;
 	}
-	print_page_block(NULL, NULL, total);
+	print_page_block(NULL, NULL, &total);
 	pthread_mutex_unlock(get_mutex_malloc());
 }

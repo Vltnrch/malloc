@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/18 17:28:30 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/19 12:11:44 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,11 @@ void			*ft_malloc(size_t size)
 	t_env		*env;
 	t_page		*page;
 
-	if (!(env = get_env_malloc()))
+	if (!(env = get_env_malloc()) || !size || size >= env->rlp.rlim_cur)
 		return (NULL);
 	block = NULL;
 	pthread_mutex_lock(get_mutex_malloc());
-	if (!size || size >= env->rlp.rlim_cur)
-		return (NULL);
-	else if (size <= MAXTINY)
+	if (size <= MAXTINY)
 		block = get_block_free(env, size, TINYPAGE, &page);
 	else if (size <= MAXSMALL)
 		block = get_block_free(env, size, SMALLPAGE, &page);

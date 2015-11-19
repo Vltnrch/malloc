@@ -3,15 +3,21 @@
 int	main()
 {
 	int		i;
-	char	*addr;
+	char	*addr[1024];
 
 	i = 0;
 	while (i < 1024)
 	{
-		addr = (char *)ft_malloc(1024);
-		addr[0] = 42;
-		ft_free(addr);
+		addr[i] = (char *)ft_malloc(1024);
 		i++;
 	}
+	show_alloc_mem();
+	i = 0;
+	while (i < 1024)
+	{
+		ft_free(addr[i]);
+		i++;
+	}
+	show_alloc_mem();
 	return (0);
 }

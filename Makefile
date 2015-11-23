@@ -6,7 +6,7 @@
 #    By: vroche <vroche@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 17:32:05 by vroche            #+#    #+#              #
-#    Updated: 2015/11/19 17:18:51 by vroche           ###   ########.fr        #
+#    Updated: 2015/11/23 15:46:08 by vroche           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm libft_malloc.so
+	rm -f libft_malloc.so
 
 re: fclean all
 

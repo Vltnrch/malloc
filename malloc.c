@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/23 15:23:04 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/23 18:37:20 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ static t_block	*add_page(t_env *env, size_t size, char type, t_page **ptrp)
 	return (page->block);
 }
 
+static void		prepare_intermediate_block(t_block *new)
+{
+	t_block	*save;
+
+	save = new->next;
+	new->next = new->ptr + new->size;
+	new->next->prev = new;
+	new = new->next;
+	new->size = (void *)new->next - (void *)new - sizeof(t_block) + 1;
+	new->isfree = 1;
+	new->ptr = (void *)new + sizeof(t_block);
+	new->next = save;
+	save->prev = new;
+}
+
 static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 {
 	void	*ptr;
@@ -48,8 +63,8 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 	ptr = new->ptr;
 	new->size = size;
 	new->isfree = 0;
-	new->next = NULL;
-	if (new->ptr + new->size + sizeof(t_block) < page->end)
+	if ((new->next == NULL && new->ptr + new->size + sizeof(t_block) \
+						< page->end))
 	{
 		new->next = new->ptr + new->size;
 		new->next->prev = new;
@@ -59,6 +74,11 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 		new->ptr = (void *)new + sizeof(t_block);
 		new->next = NULL;
 	}
+	else if ((new->next && new->ptr + new->size + sizeof(t_block) \
+						< (void *)new->next))
+		prepare_intermediate_block(new);
+	else
+		new->next = NULL;
 	return (ptr);
 }
 

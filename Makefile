@@ -6,7 +6,7 @@
 #    By: vroche <vroche@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 17:32:05 by vroche            #+#    #+#              #
-#    Updated: 2015/11/23 15:46:08 by vroche           ###   ########.fr        #
+#    Updated: 2015/11/23 17:01:14 by vroche           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ endif
 
 NAME = libft_malloc_$(HOSTTYPE).so
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g 
 
 C = free.c \
 	malloc.c \

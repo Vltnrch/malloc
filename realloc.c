@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/19 12:56:02 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/19 17:18:02 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/23 14:54:40 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ void		*ft_realloc(void *ptr, size_t size)
 		return (NULL);
 	ft_memcpy(new, ptr, block->size > size ? size : block->size);
 	ft_free(ptr);
-	return (ptr);
+	return (new);
 }

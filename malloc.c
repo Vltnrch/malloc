@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/19 12:11:44 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/23 15:23:04 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static t_block	*get_block_free(t_env *env, size_t size, \
 	return (NULL);
 }
 
-void			*ft_malloc(size_t size)
+void			*malloc(size_t size)
 {
 	t_block		*block;
 	t_env		*env;

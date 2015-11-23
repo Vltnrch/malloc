@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/29 15:13:25 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/19 12:19:29 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/23 15:23:44 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	ft_free_check_unmap(t_env *env, t_page *page)
 		ft_munmap(page);
 }
 
-void		ft_free(void *ptr)
+void		free(void *ptr)
 {
 	t_block		*block;
 	t_env		*env;

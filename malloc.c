@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/23 18:37:20 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/23 19:41:12 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static void		prepare_intermediate_block(t_block *new)
 	new->next = new->ptr + new->size;
 	new->next->prev = new;
 	new = new->next;
+	new->next = save;
 	new->size = (void *)new->next - (void *)new - sizeof(t_block) + 1;
 	new->isfree = 1;
 	new->ptr = (void *)new + sizeof(t_block);
-	new->next = save;
 	save->prev = new;
 }
 

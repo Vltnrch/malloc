@@ -6,7 +6,7 @@
 #    By: vroche <vroche@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 17:32:05 by vroche            #+#    #+#              #
-#    Updated: 2015/11/23 18:39:04 by vroche           ###   ########.fr        #
+#    Updated: 2015/11/25 18:38:04 by vroche           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ O = $(C:.c=.o)
 
 $(NAME): $(O)
 	clang -o $(NAME) -shared $(O)
+	rm -f libft_malloc.so
 	ln -s $(NAME) libft_malloc.so
 
 all: $(NAME)

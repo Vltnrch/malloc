@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 15:54:30 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/23 19:43:44 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/25 17:44:08 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static t_env	*prepare_env(void)
 	t_env	*env;
 	void	*ptr;
 
-	if (!(ptr = mmap(0, INIT, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, \
-				-1, 0)))
+	if ((ptr = mmap(0, INIT, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, \
+				-1, 0)) == MAP_FAILED)
 		return (NULL);
 	env = (t_env *)ptr;
 	env->pages = (t_page *)(ptr + sizeof(t_env));

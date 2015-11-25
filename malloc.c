@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/23 19:41:12 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/25 17:50:19 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static t_block	*add_page(t_env *env, size_t size, char type, t_page **ptrp)
 	void	*ptr;
 	t_page	*page;
 
-	if (!(ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE,\
-				-1, 0)))
+	if ((ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE,\
+				-1, 0)) == MAP_FAILED)
 		return (NULL);
 	page = env->pages;
 	while (page->next)
@@ -50,7 +50,7 @@ static void		prepare_intermediate_block(t_block *new)
 	new->next->prev = new;
 	new = new->next;
 	new->next = save;
-	new->size = (void *)new->next - (void *)new - sizeof(t_block) + 1;
+	new->size = (void *)new->next - (void *)new - sizeof(t_block);
 	new->isfree = 1;
 	new->ptr = (void *)new + sizeof(t_block);
 	save->prev = new;
@@ -77,8 +77,6 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 	else if ((new->next && new->ptr + new->size + sizeof(t_block) \
 						< (void *)new->next))
 		prepare_intermediate_block(new);
-	else
-		new->next = NULL;
 	return (ptr);
 }
 
@@ -116,9 +114,10 @@ void			*malloc(size_t size)
 	t_env		*env;
 	t_page		*page;
 
-	if (!(env = get_env_malloc()) || !size || size >= env->rlp.rlim_cur)
+	if (!(env = get_env_malloc()) || size >= env->rlp.rlim_cur)
 		return (NULL);
 	block = NULL;
+	size = (size == 0) ? 1 : size;
 	pthread_mutex_lock(get_mutex_malloc());
 	if (size <= MAXTINY)
 		block = get_block_free(env, size, TINYPAGE, &page);

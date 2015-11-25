@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 17:50:19 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/25 20:12:53 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static t_block	*add_page(t_env *env, size_t size, char type, t_page **ptrp)
 	page->block->ptr = ptr + sizeof(t_page) + sizeof(t_block);
 	page->block->prev = NULL;
 	page->block->next = NULL;
-	env->totalsize += size;
 	*ptrp = page;
 	return (page->block);
 }
@@ -130,8 +129,8 @@ void			*malloc(size_t size)
 		else if (size <= MAXSMALL)
 			block = add_page(env, SMALL, SMALLPAGE, &page);
 		else
-			block = add_page(env, ((((size + sizeof(t_page)) \
-		/ env->getpagesize) + 1) * env->getpagesize), LARGEPAGE, &page);
+			block = add_page(env, ((size + sizeof(t_page) + sizeof(t_block)) / env->getpagesize + 1) * env->getpagesize, LARGEPAGE, &page);
+		write(1, "coucou\n", 7);
 	}
 	pthread_mutex_unlock(get_mutex_malloc());
 	return (!block ? NULL : prepare_new_block(page, block, size));

@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 15:54:30 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 17:44:08 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/25 19:14:04 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static t_env	*prepare_env(void)
 	env->getpagesize = getpagesize();
 	if (getrlimit(RLIMIT_AS, &(env->rlp)) == -1)
 		write(2, "getrlimit failed\n", sizeof("getrlimit failed\n"));
-	env->totalsize = TINY;
 	env->pages->type = TINYPAGE;
 	env->pages->size = TINY - sizeof(t_env) - sizeof(t_page);
 	env->pages->block = (t_block *)(ptr + sizeof(t_env) + sizeof(t_page));

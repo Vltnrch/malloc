@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:29:16 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/23 15:42:12 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/25 19:13:03 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct		s_env
 	struct s_page	*pages;
 	int				getpagesize;
 	struct rlimit	rlp;
-	rlim_t			totalsize;
 }					t_env;
 
 t_env				*get_env_malloc(void);

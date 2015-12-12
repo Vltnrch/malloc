@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:28:55 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/26 16:57:36 by vroche           ###   ########.fr       */
+/*   Updated: 2015/12/12 22:37:21 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,15 @@ static t_block	*add_page(t_env *env, size_t size, char type, t_page **ptrp)
 	return (page->block);
 }
 
-static void		prepare_intermediate_block(t_block *new)
-{
-	t_block	*save;
-
-	save = new->next;
-	new->next = new->ptr + new->size;
-	new->next->prev = new;
-	new = new->next;
-	new->next = save;
-	new->size = (void *)new->next - (void *)new - sizeof(t_block);
-	new->isfree = 1;
-	new->ptr = (void *)new + sizeof(t_block);
-	save->prev = new;
-}
-
 static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 {
 	void	*ptr;
 
+	if (!new)
+	{
+		pthread_mutex_unlock(get_mutex_malloc());
+		return (NULL);
+	}
 	ptr = new->ptr;
 	new->size = size;
 	new->isfree = 0;
@@ -76,6 +66,7 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 	else if ((new->next && new->ptr + new->size + sizeof(t_block) \
 						< (void *)new->next))
 		prepare_intermediate_block(new);
+	pthread_mutex_unlock(get_mutex_malloc());
 	return (ptr);
 }
 
@@ -115,9 +106,9 @@ void			*malloc(size_t size)
 
 	if (!(env = get_env_malloc()) || size >= env->rlp.rlim_cur)
 		return (NULL);
+	pthread_mutex_lock(get_mutex_malloc());
 	block = NULL;
 	size = (size == 0) ? 1 : size;
-	pthread_mutex_lock(get_mutex_malloc());
 	if (size <= MAXTINY)
 		block = get_block_free(env, size, TINYPAGE, &page);
 	else if (size <= MAXSMALL)
@@ -131,6 +122,5 @@ void			*malloc(size_t size)
 		else
 			block = add_page(env, ((size + sizeof(t_page) + sizeof(t_block)) / env->getpagesize + 1) * env->getpagesize, LARGEPAGE, &page);
 	}
-	pthread_mutex_unlock(get_mutex_malloc());
-	return (!block ? NULL : prepare_new_block(page, block, size));
+	return (prepare_new_block(page, block, size));
 }

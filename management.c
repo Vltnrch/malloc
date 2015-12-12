@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 15:54:30 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 19:14:04 by vroche           ###   ########.fr       */
+/*   Updated: 2015/12/12 19:19:21 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,24 @@ int				find_block(t_env *env, t_page **ptrp, t_block **ptrb, void *ptr)
 				}
 				block = block->next;
 			}
-		}
-		if (ptr > (void *)page && ptr < page->end)
 			return (0);
+		}
 		page = page->next;
 	}
 	return (0);
+}
+
+void			prepare_intermediate_block(t_block *new)
+{
+	t_block	*save;
+
+	save = new->next;
+	new->next = new->ptr + new->size;
+	new->next->prev = new;
+	new = new->next;
+	new->next = save;
+	new->size = (void *)new->next - (void *)new - sizeof(t_block);
+	new->isfree = 1;
+	new->ptr = (void *)new + sizeof(t_block);
+	save->prev = new;
 }

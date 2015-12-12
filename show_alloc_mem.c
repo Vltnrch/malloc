@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/29 15:19:50 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 17:53:47 by vroche           ###   ########.fr       */
+/*   Updated: 2015/12/12 22:50:12 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	print_page_block(t_page *page, t_block *block, size_t *total)
 		ft_printaddr(block->ptr);
 		write(1, " - ", 3);
 		ft_printaddr(block->ptr + block->size);
-		*total += block->size + 40;
+		*total += block->size;
 	}
 	else
 		write(1, "Total", 5);
@@ -112,9 +112,9 @@ void		show_alloc_mem(void)
 
 	if (!(env = get_env_malloc()))
 		return ;
+	pthread_mutex_lock(get_mutex_malloc());
 	page = env->pages;
 	total = 0;
-	pthread_mutex_lock(get_mutex_malloc());
 	while (page)
 	{
 		print_page_block(page, NULL, &total);

@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 14:29:16 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 19:13:03 by vroche           ###   ########.fr       */
+/*   Updated: 2015/11/27 15:59:46 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_env				*get_env_malloc(void);
 pthread_mutex_t		*get_mutex_malloc(void);
 int					find_block(t_env *env, t_page **ptrp, \
 								t_block **ptrb, void *ptr);
+void				prepare_intermediate_block(t_block *new);
 
 void				free(void *ptr);
 void				*malloc(size_t size);

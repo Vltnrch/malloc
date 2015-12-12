@@ -6,7 +6,7 @@
 /*   By: vroche <vroche@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/29 15:13:25 by vroche            #+#    #+#             */
-/*   Updated: 2015/11/25 15:53:13 by vroche           ###   ########.fr       */
+/*   Updated: 2015/12/12 22:36:45 by vroche           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,13 @@ void		free(void *ptr)
 
 	if (!ptr || !(env = get_env_malloc()))
 		return ;
+	pthread_mutex_lock(get_mutex_malloc());
 	page = env->pages;
 	if (!find_block(env, &page, &block, ptr))
+	{
+		pthread_mutex_unlock(get_mutex_malloc());
 		return ;
-	pthread_mutex_lock(get_mutex_malloc());
+	}
 	block->isfree = 1;
 	ft_free_defrag(block);
 	ft_free_check_unmap(env, page);

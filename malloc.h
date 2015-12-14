@@ -18,8 +18,8 @@
 # include <sys/mman.h>
 # include <pthread.h>
 
-# define INIT (4 * getpagesize())
-# define TINY (4 * env->getpagesize)
+# define INIT (5 * getpagesize())
+# define TINY (5 * env->getpagesize)
 # define MAXTINY (128)
 # define SMALL (26 * env->getpagesize)
 # define MAXSMALL (1024)

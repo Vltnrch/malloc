@@ -27,7 +27,7 @@ static void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-void		*realloc_malloc(void *ptr, size_t size, t_block *block)
+static void		*realloc_malloc(void *ptr, size_t size, t_block *block)
 {
 	void		*new;
 

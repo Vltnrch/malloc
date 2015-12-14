@@ -52,8 +52,7 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 	ptr = new->ptr;
 	new->size = size;
 	new->isfree = 0;
-	if ((new->next == NULL && new->ptr + new->size + sizeof(t_block) \
-						< page->end))
+	if ((new->next == NULL && NBLENGHT < page->end))
 	{
 		new->next = new->ptr + new->size;
 		new->next->prev = new;
@@ -63,8 +62,7 @@ static void		*prepare_new_block(t_page *page, t_block *new, size_t size)
 		new->ptr = (void *)new + sizeof(t_block);
 		new->next = NULL;
 	}
-	else if ((new->next && new->ptr + new->size + sizeof(t_block) \
-						< (void *)new->next))
+	else if ((new->next && NBLENGHT < (void *)new->next))
 		prepare_intermediate_block(new);
 	pthread_mutex_unlock(get_mutex_malloc());
 	return (ptr);
@@ -120,7 +118,8 @@ void			*malloc(size_t size)
 		else if (size <= MAXSMALL)
 			block = add_page(env, SMALL, SMALLPAGE, &page);
 		else
-			block = add_page(env, ((size + sizeof(t_page) + sizeof(t_block)) / env->getpagesize + 1) * env->getpagesize, LARGEPAGE, &page);
+			block = add_page(env, ((size + sizeof(t_page) + sizeof(t_block)) \
+			/ env->getpagesize + 1) * env->getpagesize, LARGEPAGE, &page);
 	}
 	return (prepare_new_block(page, block, size));
 }

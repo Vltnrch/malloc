@@ -27,12 +27,25 @@ static void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
+void		*realloc_malloc(void *ptr, size_t size, t_block *block)
+{
+	void		*new;
+
+	if (!(new = malloc(size)))
+		return (NULL);
+	if (ptr)
+	{
+		ft_memcpy(new, ptr, block->size > size ? size : block->size);
+		free(ptr);
+	}
+	return (new);
+}
+
 void		*realloc(void *ptr, size_t size)
 {
 	t_block		*block;
 	t_env		*env;
 	t_page		*page;
-	void		*new;
 
 	if (!(env = get_env_malloc()))
 		return (NULL);
@@ -47,17 +60,10 @@ void		*realloc(void *ptr, size_t size)
 		block->size = size;
 		if ((block->next && block->ptr + block->size + sizeof(t_block) \
 						< (void *)block->next))
-		prepare_intermediate_block(block);
+			prepare_intermediate_block(block);
 		pthread_mutex_unlock(get_mutex_malloc());
 		return (ptr);
 	}
 	pthread_mutex_unlock(get_mutex_malloc());
-	if (!(new = malloc(size)))
-		return (NULL);
-	if (ptr)
-	{
-		ft_memcpy(new, ptr, block->size > size ? size : block->size);
-		free(ptr);
-	}
-	return (new);
+	return (realloc_malloc(ptr, size, block));
 }

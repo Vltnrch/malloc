@@ -28,6 +28,8 @@
 # define SMALLPAGE 2
 # define LARGEPAGE 3
 
+# define NBLENGHT (new->ptr + new->size + sizeof(t_block))
+
 typedef struct		s_block
 {
 	size_t			size;
